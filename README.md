@@ -76,6 +76,8 @@ apply:
 $ mvn spring-boot:run
 ```
 
+Once the server has started, open a web browser window and navigate to http://localhost:8080/
+
 ## Running Unit Tests
 
 Tests have been grouped using tags, so the Integration Tests (IT) are separate from the Unit Tests (UT). 
