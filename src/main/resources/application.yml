@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:h2:./notification;IGNORECASE=TRUE;AUTO_SERVER=TRUE
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: validate
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: true
+
+logging:
+  level:
+    root: error
+    com.hopsncode.challenge.notifications: info

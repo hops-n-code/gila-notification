@@ -1,0 +1,355 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20230825-01
+      author: hops.n.code@gmail.com
+      comment: Create Catalog table
+      changes:
+        - createTable:
+            tableName: catalog
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_catalog
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: option
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 20230825-02
+      author: hops.n.code@gmail.com
+      comment: Add UQ(name, option) to Catalog table
+      changes:
+        - addUniqueConstraint:
+            tableName: catalog
+            constraintName: uq_catalog_option
+            columnNames: name, option
+
+  - changeSet:
+      id: 20230825-03
+      author: hops.n.code@gmail.com
+      comment: Insert message categories
+      changes:
+        - insert:
+            tableName: catalog
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 100001
+              - column:
+                  name: name
+                  value: MESSAGE_CATEGORY
+              - column:
+                  name: option
+                  value: Sports
+        - insert:
+            tableName: catalog
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 100002
+              - column:
+                  name: name
+                  value: MESSAGE_CATEGORY
+              - column:
+                  name: option
+                  value: Finance
+        - insert:
+            tableName: catalog
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 100003
+              - column:
+                  name: name
+                  value: MESSAGE_CATEGORY
+              - column:
+                  name: option
+                  value: Movies
+
+  - changeSet:
+      id: 20230825-04
+      author: hops.n.code@gmail.com
+      comment: Insert notification types
+      changes:
+        - insert:
+            tableName: catalog
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 200001
+              - column:
+                  name: name
+                  value: NOTIFICATION_TYPE
+              - column:
+                  name: option
+                  value: SMS
+        - insert:
+            tableName: catalog
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 200002
+              - column:
+                  name: name
+                  value: NOTIFICATION_TYPE
+              - column:
+                  name: option
+                  value: E-mail
+        - insert:
+            tableName: catalog
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 200003
+              - column:
+                  name: name
+                  value: NOTIFICATION_TYPE
+              - column:
+                  name: option
+                  value: Push Notification
+
+  - changeSet:
+      id: 20230825-05
+      author: hops.n.code@gmail.com
+      comment: Insert notification status
+      changes:
+        - insert:
+            tableName: catalog
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 300001
+              - column:
+                  name: name
+                  value: NOTIFICATION_STATUS
+              - column:
+                  name: option
+                  value: Pending
+        - insert:
+            tableName: catalog
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 300002
+              - column:
+                  name: name
+                  value: NOTIFICATION_STATUS
+              - column:
+                  name: option
+                  value: Sent
+        - insert:
+            tableName: catalog
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 300003
+              - column:
+                  name: name
+                  value: NOTIFICATION_STATUS
+              - column:
+                  name: option
+                  value: Failed
+
+  - changeSet:
+      id: 20230825-06
+      author: hops.n.code@gmail.com
+      comment: Create User table
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_users
+              - column:
+                  name: name
+                  type: VARCHAR(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 20230825-07
+      author: hops.n.code@gmail.com
+      comment: Create Notification table
+      changes:
+        - createTable:
+            tableName: notification
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_notification
+              - column:
+                  name: create_date_time
+                  type: TIMESTAMP
+              - column:
+                  name: message
+                  type: VARCHAR(1000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: message_category_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 20230825-09
+      author: hops.n.code@gmail.com
+      comment: Add Notification FKs
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: fk_notification_status
+            baseTableName: notification
+            baseColumnNames: status_id
+            referencedTableName: catalog
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            constraintName: fk_notification_message_category
+            baseTableName: notification
+            baseColumnNames: message_category_id
+            referencedTableName: catalog
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            constraintName: fk_notification_type
+            baseTableName: notification
+            baseColumnNames: type_id
+            referencedTableName: catalog
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            constraintName: fk_notification_user
+            baseTableName: notification
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 20230825-10
+      author: hops.n.code@gmail.com
+      comment: Create UserMessageCategory table
+      changes:
+        - createTable:
+            tableName: user_message_category
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_message_category
+              - column:
+                  name: message_category_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_message_category
+  - changeSet:
+      id: 20230825-11
+      author: hops.n.code@gmail.com
+      comment: Add UserMessageCategory FKs
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: fk_user_message_category_user
+            baseTableName: user_message_category
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            constraintName: fk_user_message_category_category
+            baseTableName: user_message_category
+            baseColumnNames: message_category_id
+            referencedTableName: catalog
+            referencedColumnNames: id
+
+
+  - changeSet:
+      id: 20230825-12
+      author: hops.n.code@gmail.com
+      comment: Create UserNotificationType table
+      changes:
+        - createTable:
+            tableName: user_notification_type
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_notification_type
+              - column:
+                  name: notification_type_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_user_notification_type
+  - changeSet:
+      id: 20230825-13
+      author: hops.n.code@gmail.com
+      comment: Add UserNotificationType FKs
+      changes:
+        - addForeignKeyConstraint:
+            constraintName: fk_user_notification_type_user
+            baseTableName: user_notification_type
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            constraintName: fk_user_notification_type_notification_type
+            baseTableName: user_notification_type
+            baseColumnNames: notification_type_id
+            referencedTableName: catalog
+            referencedColumnNames: id
+
+  - changeSet:
+      id: 20230826-01
+      author: hops.n.code@gmail.com
+      comment: Insert sample user info
+      changes:
+        - sqlFile:
+            path: users.sql
+            relativeToChangelogFile: true
